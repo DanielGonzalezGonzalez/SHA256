@@ -26,25 +26,23 @@ def SHA256(frase):
 
     #print("%x" % ror(k[0], 8, 32))
 
-    original_message = frase
-    size_of_message = sys.getsizeof(original_message)
-    altered_message = original_message + "1"
-
+    original_message = bytearray(frase)
+    size_of_message = len(original_message)
+    altered_message = original_message
+    altered_message.append(1)
     K = 0
     while (K + 1 + size_of_message + 64) % 512 != 0:
-        altered_message = altered_message + "0"
+        altered_message.append(0)
         K = K + 1
+    altered_message.append(size_of_message)
+    # extra = str(size_of_message.to_bytes(16, byteorder='big'))
+    # extra = extra[2:len(extra)-1]
 
-    extra = str(size_of_message.to_bytes(16, byteorder='big'))
-    extra = extra[2:len(extra)-1]
-
-    altered_message = altered_message + extra
-    altered_message = bytes(altered_message, 'utf-8')
-    #print(altered_message)
-    message_chunks = [altered_message[i:i+512] for i in range(0, len(altered_message), 513)]
+    # altered_message = altered_message + extra
+    # altered_message = bytes(altered_message, 'utf-8')
+    message_chunks = [altered_message[i:i+64] for i in range(0, len(altered_message), 65)]
     #print(message_chunks)
     for chunk in message_chunks:
-        #new_chunk = "".join("{:01x}".format(ord(c)) for c in chunk)
 
         w = [0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -56,7 +54,7 @@ def SHA256(frase):
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,]
 
         for i in range(0, 16, 1):
-            w[i] = int(binascii.hexlify(chunk[i:i+32]), 16)
+            w[i] = int(binascii.hexlify(chunk[i:i+4]), 16)
             #w[i] = int(binascii.hexlify(chunk), 16)
             #print(w[i])
 
@@ -105,5 +103,5 @@ def SHA256(frase):
         h7 = (h7 + h) % (1 << 32)
 
     digest = ("%0.2x" % h0) + ("%0.2x" % h1) + ("%0.2x" % h2) + ("%0.2x" % h3) + ("%0.2x" % h4) + ("%0.2x" % h5) +("%0.2x" % h6) + ("%0.2x" % h7)
-    print("Frase:\t" + frase + "\n" + "Mia:\t" + digest)
+    #print("Frase:\t" + frase.decode() + "\n" + "Mia:\t" + digest)
     return digest
