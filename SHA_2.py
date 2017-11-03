@@ -24,8 +24,6 @@ def SHA256(frase):
        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2]
 
-    #print("%x" % ror(k[0], 8, 32))
-
     original_message = bytearray(frase)
     size_of_message = len(original_message)
     altered_message = original_message
@@ -35,13 +33,8 @@ def SHA256(frase):
         altered_message.append(0)
         K = K + 1
     altered_message.append(size_of_message)
-    # extra = str(size_of_message.to_bytes(16, byteorder='big'))
-    # extra = extra[2:len(extra)-1]
-
-    # altered_message = altered_message + extra
-    # altered_message = bytes(altered_message, 'utf-8')
     message_chunks = [altered_message[i:i+64] for i in range(0, len(altered_message), 65)]
-    #print(message_chunks)
+
     for chunk in message_chunks:
 
         w = [0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -55,17 +48,12 @@ def SHA256(frase):
 
         for i in range(0, 16, 1):
             w[i] = int(binascii.hexlify(chunk[i:i+4]), 16)
-            #w[i] = int(binascii.hexlify(chunk), 16)
-            #print(w[i])
 
         for i in range(16, 64, 1):
-            #print(w[i-15], ror(w[i-15], 7, 32))
             s0 = ror(w[i-15], 8, 32) ^ ror(w[i-15], 19, 32) ^ (w[i-15] >> 3)
             s1 = ror(w[i-2], 18, 32) ^ ror(w[i-2], 20, 32) ^ (w[i-2] >> 10)
             w[i] = (((((w[i-16] + s0) % (1 << 32)) + w[i-7]) % (1 << 32)) + s1) % (1 << 32)
             w[i] = (w[i-16] + s0 + w[i-7] + s1) % (1 << 32)
-            #print(w[i])
-
 
         a = h0
         b = h1
