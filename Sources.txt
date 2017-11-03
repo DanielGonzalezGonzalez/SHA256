@@ -1,0 +1,10 @@
+Sources
+
+https://stackoverflow.com/questions/27779677/python-format-time-elapsed-from-seconds-to-hour-mins-and-sceconds
+https://stackoverflow.com/questions/7585435/best-way-to-convert-string-to-bytes-in-python-3
+https://stackoverflow.com/questions/27001419/how-to-append-to-bytes-in-python-3
+https://stackoverflow.com/questions/27176317/bitwise-rotate-right
+https://stackoverflow.com/questions/2340319/python-3-1-1-string-to-hex
+https://stackoverflow.com/questions/20024490/how-to-split-a-byte-string-into-separate-bytes-in-python
+https://stackoverflow.com/questions/7074051/what-is-the-best-way-to-generate-all-possible-three-letter-strings
+https://en.wikipedia.org/wiki/SHA-2
